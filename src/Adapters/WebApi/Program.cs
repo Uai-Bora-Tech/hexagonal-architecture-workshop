@@ -43,9 +43,9 @@ builder.Host
 
 var app = builder.Build();
 
-await using var scope = app.Services.CreateAsyncScope();
-await using var db = scope.ServiceProvider.GetService<LibraryContext>();
-await db.Database.MigrateAsync();
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetService<LibraryContext>();
+db.Database.Migrate();
 
 if (app.Environment.IsDevelopment())
 {
