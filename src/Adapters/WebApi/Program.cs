@@ -39,6 +39,8 @@ builder.Host
 
         services
             .AddConfigureHandlers();
+
+        services.AddCors();
     });
 
 var app = builder.Build();
@@ -55,5 +57,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(c => c.AllowCredentials().AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
 await app.RunAsync();
