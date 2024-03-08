@@ -1,4 +1,4 @@
-# Workhop - Hexagonal Architecture and DevOps
+# <p align="center">Workhop - Hexagonal Architecture and DevOps</p>
 
 <p align="center">
   <a href="#bulb-about">About</a> &nbsp;&bull;&nbsp;
