@@ -46,9 +46,11 @@ builder.Host
         {
             options.AddPolicy("AllowAnyOrigin", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyHeader()
+                    .AllowCredentials()
             });
         });
     });
