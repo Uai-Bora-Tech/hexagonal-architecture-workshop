@@ -43,12 +43,12 @@ builder.Host
 
         services.AddCors(cors => cors.AddPolicy(
             name: myAllowSpecificOrigins, 
-            opt => {
+            opt =>
+            {
                 opt
                     .AllowAnyHeader()
                     .AllowAnyOrigin()
-                    .AllowCredentials()
-                    .SetIsOriginAllowed(or => true);
+                    .AllowAnyMethod();
             }
         ));
     });
