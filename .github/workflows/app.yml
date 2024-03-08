@@ -1,0 +1,70 @@
+name: Build and Deploy | Azure App Service Container
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag-version:
+        description: "Image version"
+        required: true
+
+env:
+  AZURE_WEBAPP_NAME: uai-bora-workshop-appservice2
+  DOTNET_VERSION: '7.0.x'
+  REGISTRY: crworkshopuai.azurecr.io
+  IMAGE_NAME: uaiboraworkshop
+
+jobs:
+  build:
+    name: Build and Publish Image
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }} 
+      
+      - name: Dotnet Build
+        run: |
+          dotnet restore
+          dotnet build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: crworkshopuai.azurecr.io
+          username: ${{ secrets.SP_CLIENT_ID }}
+          password: ${{ secrets.SP_CLIENT_SECRET }}
+
+      - name: Build and Push Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.tag-version }}
+
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Login Azure
+        env:
+          AAD_SERVICE_PRINCIPAL_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
+          AAD_SERVICE_PRINCIPAL_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
+        run: |
+          az login --service-principal -u ${{ secrets.SP_CLIENT_ID }} -p ${{ secrets.SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          az account set -s ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          az account show
+  
+      - name: Azure Web Apps Deployment
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.tag-version }}
