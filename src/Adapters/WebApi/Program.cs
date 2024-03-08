@@ -41,6 +41,16 @@ builder.Host
             .AddConfigureHandlers();
 
         services.AddCors();
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAnyOrigin", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
     });
 
 var app = builder.Build();
@@ -58,6 +68,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors(c => c.AllowCredentials().AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+app.UseCors("AllowAnyOrigin");
 
 await app.RunAsync();
