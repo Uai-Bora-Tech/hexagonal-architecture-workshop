@@ -1,10 +1,11 @@
 using Application.DependencyInjections.Extensions;
 using Infrastructure.SqlServer.DependencyInjections;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using System.Reflection;
 using Infrastructure.SqlServer.Databases.Contexts;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Transformers;
+
+var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,16 @@ builder.Host
         services
             .AddConfigureHandlers();
 
-        services.AddCors();
+        services.AddCors(cors => cors.AddPolicy(
+            name: myAllowSpecificOrigins, 
+            opt => {
+                opt
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(or => true);
+            }
+        ));
     });
 
 var app = builder.Build();
@@ -58,10 +68,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
-    .AllowCredentials());
+app.UseCors(myAllowSpecificOrigins);
 
 await app.RunAsync();
