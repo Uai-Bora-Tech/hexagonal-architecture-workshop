@@ -50,7 +50,7 @@ builder.Host
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials()
+                    .AllowCredentials();
             });
         });
     });
