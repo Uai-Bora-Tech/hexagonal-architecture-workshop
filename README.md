@@ -3,8 +3,7 @@
 <p align="center">
   <a href="#bulb-about">About</a> &nbsp;&bull;&nbsp;
   <a href="#classical_building-business-model">Business Model</a> &nbsp;&bull;&nbsp;
-  <a href="#mag_right-research">Tech Stack</a> &nbsp;&bull;&nbsp;
-  <a href="#computer-running">Running</a>
+  <a href="#toolbox-tech-stack">Tech Stack</a>
 </p>
 
 ## :bulb: About
@@ -16,6 +15,8 @@ This project was generate inside the workshop classes, during the 05, 06, and 07
 Support this research by **giving it a star**. Thanks!
 
 ## :classical_building: Business Model
+
+![Business Model](./.assets/imgs/business_model.png)
 
 ## :toolbox: Tech Stack
 
@@ -33,11 +34,9 @@ Support this research by **giving it a star**. Thanks!
 - [GitHub Actions](https://docs.github.com/pt/actions) - A workflow automation
 - [Docker](https://www.docker.com/) - An accelerated container application development
 
-## :computer: Running
-
 ## Authors
 
-> See the list of [contributors](https://github.com/AntonioFalcao/EventualShop/graphs/contributors) who participated in this project.
+> See the list of [contributors](https://github.com/Uai-Bora-Tech/hexagonal-architecture-workshop/graphs/contributors) who participated in this project.
 
 ## License
 
